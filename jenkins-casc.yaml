@@ -1,0 +1,81 @@
+jenkins:
+  systemMessage: "Welcome to Jenkins configured by JCasC!"
+  numExecutors: 4
+  quietPeriod: 5
+  scmCheckoutRetryCount: 2
+  slaveAgentPort: 50000
+  remotingSecurity:
+    enabled: true
+  mode: NORMAL
+  markupFormatter:
+    plainText:
+      disableSyntaxHighlighting: false
+
+unclassified:
+  buildTimeout:
+    operations:
+      - timeout:
+          timeoutMinutes: 30
+          failBuild: true
+          writeDescription: true
+
+tool:
+  maven:
+    installations:
+      - name: "Maven 3.8.8"
+        home: "/opt/maven"
+  nodejs:
+    installations:
+      - name: "NodeJS 18"
+        home: "/usr/local/nodejs"
+  dockerTool:
+    installations:
+      - name: "Docker"
+        home: "/usr/bin/docker"
+
+plugins:
+  required:
+    - id: workflow-aggregator
+    - id: pipeline-stage-view
+    - id: blueocean
+    - id: git
+    - id: docker-plugin
+    - id: nodejs
+    - id: maven-plugin
+    - id: build-timeout
+
+jobs:
+  - script: >
+      pipelineJob('example-pipeline') {
+        definition {
+          cps {
+            script("""
+              pipeline {
+                agent any
+                stages {
+                  stage('Build') {
+                    steps {
+                      sh 'echo Building...'
+                    }
+                  }
+                  stage('Test') {
+                    steps {
+                      sh 'echo Testing...'
+                    }
+                  }
+                  stage('Deploy') {
+                    steps {
+                      sh 'echo Deploying...'
+                    }
+                  }
+                }
+              }
+            """.stripIndent())
+            sandbox(true)
+          }
+        }
+        triggers {
+          scm('H/5 * * * *')
+        }
+        description('An example pipeline job configured by JCasC')
+      }
