@@ -1,0 +1,33 @@
+# Node.js dependencies
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.*
+
+# Docker artifacts
+*.pid
+*.seed
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# MongoDB data (commonly stored in ./data or ./mongodb)
+data/
+mongodb/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Misc
+coverage/
+dist/
+build/ 
